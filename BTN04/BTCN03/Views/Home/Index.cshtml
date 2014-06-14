@@ -1,0 +1,69 @@
+﻿@using BTCN03.Models
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jewelry Store</title>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/datepicker.css")">
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/bootstrap.css")">
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/jewelry.css")">
+    <link rel="shortcut icon" type="image/png" href="@Url.Content("~/img/favicon.png")" />
+    <link href='http://fonts.googleapis.com/css?family=Carrois+Gothic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="@Url.Content("~/js/jquery1.11.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/js/jewelry.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/js/jquery.bxslider.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/js/plugins/bootstrap-datepicker.js")"></script>
+    <script type="text/javascript">
+        function getRealPath() {
+            return "@String.Format("{0}://{1}",Request.Url.Scheme, Request.Url.Authority)";
+        }
+
+        $(document).ready(function () {
+            
+            objectProduct = new Array();
+            __createProductList(objectProduct);
+
+            prepare();
+            createFilterMenu();
+            //			createProductList();
+            createProductV2(objectProduct);
+            objectProduct.shuffle();
+            for (var i = 0; i < objectProduct.length; i++) {
+                createSlideElement(objectProduct[i][5] + "?id=" + objectProduct[i][0], objectProduct[i][3], objectProduct[i][1], objectProduct[i][1], objectProduct[i][2], objectProduct[i][4]);
+            }
+            processSlide();
+            splitOnPage('#productContain',"@ViewData["totalPage"]");
+            init();
+            initFooter();
+        });
+        function __createProductList(objectProduct) {
+            @foreach (DataModel a in ViewData["data"] as Array) 
+            { 
+                <text>
+                    createProductObject("@a.id", "@a.title", "@a.des", "@a.linkimg", "@a.cost", "@a.link", "@a.type", "@a.style", "@a.material", "@a.weight", "@a.date", "@a.author", "@a.tag", objectProduct);
+                </text>
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="header-container">
+        <header id="header"></header>
+        <div id="bodyContent">
+            <div id="hompage-slider">
+                <ul id="homeslider"></ul>
+            </div>
+            <div id="htmlcontent">
+                <div id="filterMenu"></div>
+                <div id="productList">
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <footer>
+        <ul id="footerContain">
+        </ul>
+    </footer>
+</body>
+</html>

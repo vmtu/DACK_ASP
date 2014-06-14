@@ -1,0 +1,121 @@
+﻿@using BTCN03.Models
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jewelry Store</title>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/jewelry.css")">
+    <link rel="shortcut icon" type="image/png" href="@Url.Content("~/img/favicon.png")" />
+    <link href='http://fonts.googleapis.com/css?family=Carrois+Gothic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="@Url.Content("~/js/jquery1.11.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/js/jewelry.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/js/jquery.bxslider.js")"></script>
+    <script type="text/javascript">
+        function getRealPath() {
+            return "@String.Format("{0}://{1}",Request.Url.Scheme, Request.Url.Authority)";
+        }
+        $(document).ready(function () {
+            objectProduct = new Array();
+            __createProductList(objectProduct)
+            prepare();
+            createMenu("Advanced Search", "#", 'advancedSearchShow');
+            $('#advancedSearchShow').click(function () {
+                $('#controlSearchBox').animate({ top: "0%" });
+            });
+            $('#advanceSearchButton').click(function () {
+                $('#controlSearchBox').animate({ top: "-50%" });
+            });
+            $('#startSearch').click(function () {
+                searchAction(objectProduct);
+            });
+            if (GetURLParameter("action") == "advanceSearch") {
+                $('#controlSearchBox').animate({ top: "0%" });
+            }
+            searchAction(objectProduct);
+
+            init();
+            initFooter();
+            $('#startSearch').click(function () {
+                $('#formAdvancedSearch').submit();
+            });
+            splitOnPage('#contentPage',@ViewData["totalPage"]);
+        });
+        function __createProductList(objectProduct) {
+            @if (ViewData["searchResult"] != null) {
+            foreach (DataModel a in ViewData["searchResult"] as Array) 
+            { 
+                <text>
+                    createProductObject("@a.id", "@a.title", "@a.des", "@a.linkimg", "@a.cost", "@a.link", "@a.type", "@a.style", "@a.material", "@a.weight", "@a.date", "@a.author", "@a.tag", objectProduct);
+                </text>
+            }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="header-container">
+        <header id="header"></header>
+        <div id="bodyContent">
+            <div id="htmlcontent">
+                <div id="contentPage">
+                    <div class="title">Search Result</div>
+                    <div id="controlSearchBox">
+                        <form action="@Url.Content("~/Search?action=advanceSearch")" method="post" name="advancedSearchForm" id="formAdvancedSearch">
+                            <input class="loginElement" name="name" id="searchName" placeholder="Product Name" />
+                            <select class="loginElement" name="tag_name" id="searchType">
+                                <option style="color:#666666;" value="">Product Type</option>
+                                <option value="bracelets">Bracelets</option>
+                                <option value="necklaces">Necklaces</option>
+                                <option value="earrings">Earrings</option>
+                                <option value="gifts">Gifts</option>
+                                <option value="couples">Couple</option>
+                                <option value="Crown">Crown</option>
+                            </select>
+                            <select class="loginElement" name="material" id="searchMaterial">
+                                <option style="color:#666666;" value="">Product Material</option>
+                                <option value="silver">Silver</option>
+                                <option value="gold">Gold</option>
+                                <option value="diamond">Diamond</option>
+                                <option value="gem">Gem</option>
+                            </select>
+                            <select class="loginElement" name="searchCostFrom" id="searchCostFrom">
+                                <option value="">Price From</option>
+                            </select>
+                            <script type="text/javascript">
+                                for (var i = 0; i < 1000; i += 50) {
+                                    $("#searchCostFrom").append("<option value='" + i + "'>$" + i + "</option> ");
+                                }
+                            </script>
+                            <select class="loginElement" name="searchCostTo" id="searchCostTo">
+                                <option value="">Price To</option>
+                                <option value="$9999999999">Larger than $1000</option>
+                            </select>
+                            <script type="text/javascript">
+                                for (var i = 50; i < 1000; i += 50) {
+                                    $("#searchCostTo").append("<option value='" + i + "'>$" + i + "</option> ");
+                                }
+                            </script>
+                            <select class="loginElement" name="author" id="searchDeveloper">
+                                <option style="color:#666666;" value="">Product Developer</option>
+                                <option value="vmtu">Vũ Mạnh Tú</option>
+                                <option value="tx">Trường Xuân</option>
+                            </select>
+                            <span class="button2" id="startSearch">Search Now!</span>
+                            <div id="advanceSearchButton"><img src="@Url.Content("~/img/red-go-up-md.png")" /></div>
+                        </form>
+                    </div>
+                    <div id="searchResult">
+
+                    </div>
+                    <div style="clear:both"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <ul id="footerContain">
+        </ul>
+    </footer>
+</body>
+</html>

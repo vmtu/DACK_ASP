@@ -1,0 +1,53 @@
+﻿@using BTCN03.Models
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jewelry Store</title>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/jewelry.css")">
+    <link rel="shortcut icon" type="image/png" href="@Url.Content("~/img/favicon.png")" />
+    <link href='http://fonts.googleapis.com/css?family=Carrois+Gothic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="@Url.Content("~/js/jquery1.11.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/js/jewelry.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/js/jquery.bxslider.js")"></script>
+    <script type="text/javascript">
+    function getRealPath() {
+        return "@String.Format("{0}://{1}",Request.Url.Scheme, Request.Url.Authority)";
+    }
+
+    $(document).ready(function () {
+        prepare();
+        var id = GetURLParameter('id');
+        @foreach (DataModel a in ViewData["item"] as Array)
+            {
+                <text>
+                    detailProduct("@a.title", "@a.des", "@a.linkimg", "@a.cost", "@a.link","@a.material", "@a.weight", "@a.date","@a.author");
+                </text>
+            }
+        @foreach (DataComment b in ViewData["comment"] as Array)
+        {
+            <text>
+                pushComment("@b.name", "@b.comment");
+            </text>
+        }
+        init();
+        initFooter();
+    });
+    </script>
+</head>
+<body>
+    <div class="header-container">
+        <header id="header"></header>
+        <div id="bodyContent">
+            <div id="htmlcontent">
+                <div id="contentPage">
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <ul id="footerContain">
+        </ul>
+    </footer>
+</body>
+</html>
